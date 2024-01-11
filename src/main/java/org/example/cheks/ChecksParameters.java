@@ -1,7 +1,5 @@
 package org.example.cheks;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import static org.example.cheks.ChecksArguments.tempArgs;
