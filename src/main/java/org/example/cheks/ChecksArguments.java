@@ -1,6 +1,8 @@
 package org.example.cheks;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,8 +14,8 @@ public class ChecksArguments {
     static boolean prefix = false;
     static boolean addToFile = false;
     static boolean isFullStatistics = false;
-    static String addFilePath;
-    static String prefixForFiles;
+    public static String addFilePath;
+    public static String prefixForFiles;
 
     public static String[] checksArguments(String[] args) {
         //args = filterParameters(Arrays.stream(args).map(String::toLowerCase).toList()).toArray(new String[0]);
@@ -42,7 +44,8 @@ public class ChecksArguments {
         String pathProject = System.getProperty("user.dir");
         if (addPath) {
             int indexPath = tempArgs.indexOf("-o");
-            if(!args[indexPath + 1].startsWith("-") && (new File(pathProject + args[indexPath + 1]).exists() || new File(args[indexPath + 1]).exists())) {
+            String path = args[indexPath + 1].contains("/") ? args[indexPath + 1].replace("/","\\"):args[indexPath + 1];
+            if(!args[indexPath + 1].startsWith("-") && ((new File(pathProject + path).mkdirs() || new File(path).mkdirs()))) {
                 addFilePath = args[indexPath + 1];
             } else {
                 addPath = false;
@@ -59,7 +62,8 @@ public class ChecksArguments {
         List<String> filesArgs = new ArrayList<>();
         for (String arg : tempArgs) {
             if(arg.endsWith(".txt")) {
-                if(new File(arg).exists()) {
+                Path path = Path.of(arg);
+                if(Files.exists(path) && Files.isReadable(path)) {
                     filesArgs.add(arg);
                 }
             }
