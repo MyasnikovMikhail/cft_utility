@@ -56,21 +56,21 @@ public class SortingByType {
         if (patternInt.matcher(line).matches()) {
             if (!createFileInt) {
                 createFileInt = true;
-                writerInt = new FileWriter(addFilePath == null?"":addFilePath + prefixForFiles + "integers.txt");
+                writerInt = new FileWriter(addFilePath == null?"":addFilePath /*+ prefixForFiles*/ + "integers.txt");
             }
             writerInt.write(line + "\n");
 
         } else if (patternFloat.matcher(line).matches()) {
             if (!createFileFloat) {
                 createFileFloat = true;
-                writerFloat = new FileWriter(addFilePath == null?"":addFilePath + prefixForFiles + "floats.txt");
+                writerFloat = new FileWriter(addFilePath == null?"":addFilePath /*+ prefixForFiles*/ + "floats.txt");
             }
             writerFloat.write(line + "\n");
 
         } else {
             if (!createFileStr) {
                 createFileStr = true;
-                writerStr = new FileWriter(addFilePath == null?"":addFilePath + prefixForFiles + "strings.txt");
+                writerStr = new FileWriter(addFilePath == null?"":addFilePath /*+ prefixForFiles*/ + "strings.txt");
             }
             writerStr.write(line + "\n");
         }
