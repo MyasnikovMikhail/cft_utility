@@ -1,6 +1,9 @@
 package org.example;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 import static org.example.cheks.ChecksArguments.*;
@@ -81,7 +84,7 @@ public class SortingByType {
                 }
             }
         }
-        if(!isFullStatistics) {
+        if (!isFullStatistics) {
             System.out.println("Элементов integer записано: " + numElementsInt);
             System.out.println("Элементов float записано: " + numElementsFloat);
             System.out.println("Элементов string записано: " + numElementsStr);
@@ -90,13 +93,13 @@ public class SortingByType {
             System.out.println("Максимальное число: " + maxInt);
             System.out.println("Минимальное число: " + minInt);
             System.out.println("Сумма чисел: " + sumInt);
-            System.out.println("Среднее число: " + (float)sumInt/numElementsInt + "\n");
+            System.out.println("Среднее число: " + (float) sumInt / numElementsInt + "\n");
 
             System.out.println("Элементов float записано: " + numElementsFloat);
             System.out.println("Максимальное число: " + maxFloat);
             System.out.println("Минимальное число: " + minFloat);
             System.out.println("Сумма чисел: " + sumFloat);
-            System.out.println("Среднее число: " + sumFloat/numElementsFloat + "\n");
+            System.out.println("Среднее число: " + sumFloat / numElementsFloat + "\n");
 
             System.out.println("Элементов string записано: " + numElementsStr);
             System.out.println("Максимальная длина строки: " + lenMaxStr);
@@ -119,7 +122,7 @@ public class SortingByType {
                 writerFloat.flush();
                 writerFloat.close();
             }
-        }   catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Невозможно закончить работу программы корректно");
             System.exit(0);
         }
@@ -132,21 +135,21 @@ public class SortingByType {
                 writerInt = new FileWriter(filePath + (filePath.endsWith("\\") ? "" : "\\") + prefixForFiles + "integers.txt", addToFile);
             }
             numElementsInt++;
-            if(isFullStatistics){
-                if(numElementsInt == 1){
+            if (isFullStatistics) {
+                if (numElementsInt == 1) {
                     maxInt = Long.parseLong(line);
                     minInt = Long.parseLong(line);
                 }
-                if(Long.parseLong(line) > maxInt) {
+                if (Long.parseLong(line) > maxInt) {
                     maxInt = Long.parseLong(line);
                 }
-                if(Long.parseLong(line) < minInt){
+                if (Long.parseLong(line) < minInt) {
                     minInt = Long.parseLong(line);
                 }
                 sumInt += Long.parseLong(line);
 
             }
-            if(numElementsInt % 10 == 0){
+            if (numElementsInt % 10 == 0) {
                 writerInt.flush();
             }
             writerInt.write(line + "\n");
@@ -157,16 +160,16 @@ public class SortingByType {
                 writerFloat = new FileWriter(filePath + (filePath.endsWith("\\") ? "" : "\\") + prefixForFiles + "floats.txt", addToFile);
             }
             numElementsFloat++;
-            line = line.replace(",",".");
-            if(isFullStatistics){
-                if(numElementsFloat == 1){
+            line = line.replace(",", ".");
+            if (isFullStatistics) {
+                if (numElementsFloat == 1) {
                     maxFloat = Float.parseFloat(line);
                     minFloat = Float.parseFloat(line);
                 }
-                if(Float.parseFloat(line) > maxFloat) {
+                if (Float.parseFloat(line) > maxFloat) {
                     maxFloat = Float.parseFloat(line);
                 }
-                if(Float.parseFloat(line) < minFloat){
+                if (Float.parseFloat(line) < minFloat) {
                     minFloat = Float.parseFloat(line);
                 }
                 sumFloat += Float.parseFloat(line);
@@ -180,15 +183,15 @@ public class SortingByType {
                 writerStr = new FileWriter(filePath + (filePath.endsWith("\\") ? "" : "\\") + prefixForFiles + "strings.txt", addToFile);
             }
             numElementsStr++;
-            if(isFullStatistics){
-                if(numElementsStr == 1){
+            if (isFullStatistics) {
+                if (numElementsStr == 1) {
                     lenMaxStr = line.length();
                     lenMinStr = line.length();
                 }
-                if(line.length() > lenMaxStr) {
+                if (line.length() > lenMaxStr) {
                     lenMaxStr = line.length();
                 }
-                if(line.length() < lenMinStr){
+                if (line.length() < lenMinStr) {
                     lenMinStr = line.length();
                 }
 

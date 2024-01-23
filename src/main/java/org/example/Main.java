@@ -1,7 +1,6 @@
 package org.example;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import static org.example.SortingByType.sortingByType;
 import static org.example.cheks.ChecksArguments.checksArguments;
