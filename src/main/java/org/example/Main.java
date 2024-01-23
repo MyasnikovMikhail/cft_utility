@@ -8,7 +8,6 @@ import static org.example.cheks.ChecksArguments.checksArguments;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        //System.out.println("Введенные параметры будут переведены в нижний регистр\n");
         args = checksArguments(args);
         sortingByType(args);
     }

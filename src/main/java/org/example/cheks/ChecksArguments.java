@@ -1,7 +1,6 @@
 package org.example.cheks;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,14 +13,13 @@ public class ChecksArguments {
     static List<String> tempArgs = new ArrayList<>();
     static boolean addPath = false;
     static boolean prefix = false;
-    static boolean addToFile = false;
-    static boolean isFullStatistics = false;
-    public static String addFilePath;
+    public static boolean addToFile = false;
+    public static boolean isFullStatistics = false;
+    public static String filePath;
     public static String prefixForFiles;
 
     public static String[] checksArguments(String[] args) throws IOException {
-        //args = filterParameters(Arrays.stream(args).map(String::toLowerCase).toList()).toArray(new String[0]);
-        for(String arg : args) {
+        for (String arg : args) {
             switch (arg) {
                 case ("-p"):
                     prefix = true;
@@ -31,7 +29,7 @@ public class ChecksArguments {
                     break;
                 case ("-a"):
                     addToFile = true;
-                case("-f"):
+                case ("-f"):
                     isFullStatistics = true;
                     break;
             }
@@ -41,42 +39,50 @@ public class ChecksArguments {
         return args;
     }
 
-    private static void checksParameters(String[] args) throws IOException {
+    private static void checksParameters(String[] args){
         tempArgs.addAll(Arrays.stream(args).distinct().toList());
         String pathProject = System.getProperty("user.dir");
         if (prefix) {
             int indexPrefix = tempArgs.indexOf("-p");
-            prefixForFiles = args[indexPrefix + 1].replaceAll("[/.:* ?\"<>| \\\\]","");
-            System.out.println("Проверка на ");
-            if(prefixForFiles.length() > 247){
+            prefixForFiles = args[indexPrefix + 1].replaceAll("[/.:* ?\"<>| \\\\]", "");
+            if (prefixForFiles.length() > 244) {
                 prefixForFiles = prefixForFiles.substring(0, 243);
-                System.out.println("Новый прификс: " + prefixForFiles);
-//                new FileWriter(prefixForFiles + "integers.txt");
             }
+        } else {
+            prefixForFiles = "";
         }
-
-
-
 
         if (addPath) {
-            int indexPath = tempArgs.indexOf("-o");
-            String path = args[indexPath + 1].contains("/") ? args[indexPath + 1].replace("/","\\"):args[indexPath + 1];
-            path = path.replaceAll("[/:*?\"<>|]","");
-            System.out.println(path);
-            if(!args[indexPath + 1].startsWith("-") && ((new File(pathProject + path).mkdirs() || new File(path).mkdirs()))) {
-                addFilePath = args[indexPath + 1];
+            int indexPath = tempArgs.indexOf("-o") + 1;
+            String path = args[indexPath].contains("/") ? args[indexPath].replace("/", "\\") : args[indexPath];
+            path = path.replaceAll("[/*?\"<>|]", "");
+            if (!path.startsWith("\\") && (new File(path).mkdirs() || new File(path).isDirectory())) {
+                filePath = path;
+                System.out.println(path);
             } else {
-                addPath = false;
+                File file = new File(pathProject + (path.startsWith("\\") ? "" : "\\") + path.replaceAll(":",""));
+                if (file.mkdirs() || file.isDirectory()) {
+                    filePath = file.getPath();
+                    System.out.println(file.getPath());
+                } else {
+                    System.out.println("Не удалось создать нужну дерикторию, файлы будут созданы в дириктори проекта" + pathProject);
+                    filePath = pathProject;
+                    System.out.println(file.getPath());
+                }
             }
+
+        } else {
+            System.out.println("Файлы будут созданы в дириктори проекта: " + pathProject);
+            filePath = pathProject;
         }
+        System.out.println("Итоговый путь где будут храниться результаты: " + filePath);
     }
 
     public static String[] checksParametersFiles() {
         List<String> filesArgs = new ArrayList<>();
         for (String arg : tempArgs) {
             if(arg.endsWith(".txt")) {
-                Path path = Path.of(arg);
-                if(Files.exists(path) && Files.isReadable(path)) {
+                if(new File(arg).exists() && new File(arg).canRead()) {
                     filesArgs.add(arg);
                 }
             }
